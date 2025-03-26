@@ -111,7 +111,7 @@ Chỉ 1 ngắt yêu cầu => chắc chắn đc phục vụ.
 
 ![alt text](image-3.png)
 
-- Counter Register
+- Counter Register (CNT)
 
 - Auto-Reload Register (ARR)
 

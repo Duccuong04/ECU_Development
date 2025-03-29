@@ -111,8 +111,42 @@ Chỉ 1 ngắt yêu cầu => chắc chắn đc phục vụ.
 
 ![alt text](image-3.png)
 
-- Counter Register (CNT)
+- STM32F103 có 7 TIMER theo reference manual
 
-- Auto-Reload Register (ARR)
+| Timer  | Loại                 | Độ rộng | Tính năng chính                                      |
+|--------|----------------------|---------|-----------------------------------------------------|
+| **TIM1**  | Advanced-control    | 16-bit  | PWM nâng cao, Complementary output, Break input   |
+| **TIM2**  | General-purpose     | 32-bit  | Timer/Capture/Compare/PWM                         |
+| **TIM3**  | General-purpose     | 16-bit  | Timer/Capture/Compare/PWM                         |
+| **TIM4**  | General-purpose     | 16-bit  | Timer/Capture/Compare/PWM                         |
+| **TIM5**  | General-purpose     | 16-bit  | Timer/Capture/Compare/PWM                         |
+| **TIM6**  | Basic               | 16-bit  | Timebase, DAC trigger, không có đầu ra PWM        |
+| **TIM7**  | Basic               | 16-bit  | Timebase, DAC trigger, không có đầu ra PWM        |
 
-- Timer Modes
+## Cấu hình chế độ Ngắt Timer
+
+### 2.1. Các thanh ghi cần thiết (cấu hình cho chân General - purpose Timer, TIM2)
+
+```c
+#define TIM2_BASE			0x40000000
+#define TIM2_CR1			(*(volatile unsigned int*)(TIME_BASE + 0x00))
+#define TIM2_DIER			(*(volatile unsigned int*)(TIME_BASE + 0x0C))
+#define TIM2_SR			    (*(volatile unsigned int*)(TIME_BASE + 0x10))
+#define TIM2_PSC			(*(volatile unsigned int*)(TIME_BASE + 0x28))
+#define TIM2_ARR			(*(volatile unsigned int*)(TIME_BASE + 0x2C))
+#define TIM2_CNT			(*(volatile unsigned int*)(TIME_BASE + 0x24))
+```
+
+- **CR1**: Điều khiển hoạt động của bộ counter, one-pulse mode, up/ down counter, enable/ disable bộ định thời
+
+- **DIER**: bit 0 (UIE - update interrupt enable), cho phép ngắt khi có sự kiện ngắt
+
+- **SR**: Trạng thái của cờ ngắt **UIF (bit 0)**
+
+- **PSC (Pre-scaler)**: thanh ghi chia trước, giá trị chia tần số cho bộ đếm
+
+![alt text](image-4.png)
+
+- **ARR**: Giá trị Auto-Reload của bộ đếm, khi tràn (CNT > ARR), ARR = 0 (nếu đếm lên) và gửi tín hiệu ngắt, update event
+
+**CNT**: giá trị hiện tại của bộ đếm

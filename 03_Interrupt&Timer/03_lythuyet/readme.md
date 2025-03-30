@@ -139,7 +139,7 @@ Chỉ 1 ngắt yêu cầu => chắc chắn đc phục vụ.
 
 - **CR1**: Điều khiển hoạt động của bộ counter, one-pulse mode, up/ down counter, enable/ disable bộ định thời
 
-- **DIER**: bit 0 (UIE - update interrupt enable), cho phép ngắt khi có sự kiện ngắt
+- **DIER**: bit 0 (UIE - update interrupt enable), cho phép ngắt hoạt động khi có sự kiện ngắt
 
 - **SR**: Trạng thái của cờ ngắt **UIF (bit 0)**
 
@@ -149,4 +149,17 @@ Chỉ 1 ngắt yêu cầu => chắc chắn đc phục vụ.
 
 - **ARR**: Giá trị Auto-Reload của bộ đếm, khi tràn (CNT > ARR), ARR = 0 (nếu đếm lên) và gửi tín hiệu ngắt, update event
 
-**CNT**: giá trị hiện tại của bộ đếm
+**CNT**: giá trị hiện tại của bộ đếm, sau 1 chu kì Timer thì đếm lên 1
+
+**Bảng vector NVIC**
+
+![alt text](image-5.png)
+
+- Danh sách các địa chỉ hàm xử lý ngắt (**ISR**) được lưu trong bộ nhớ Flash tại địa chỉ **0x08000000** khi vi điều khiển STM32 khởi động. Khi một ngắt xảy ra, vi điều khiển sẽ tìm địa chỉ tương ứng của chương trình ngắt cần thực thi (**ISR**) trong bảng này -> chương trình nhảy đến hàm xử lý ISR (thanh ghi PC trỏ tới). Sau khi xử lý xong, quay lại chương trình chính
+
+Gồm:
+
+- Các vector xử lý lỗi hệ thống (**System Exception**)
+
+- Vector ngắt ngoài (**External Interrupts**)
+

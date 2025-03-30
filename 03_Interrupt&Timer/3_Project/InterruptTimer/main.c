@@ -22,7 +22,8 @@ void TIM2_IRQHandler(void)
 	{
 		TIM2_SR &= ~1;   // delete flag interrupt UIF = 0
 		
-		GPIO_ODR ^= (1 << 13); // Toggle PIN PC13
+		GPIO_ODR ^= (1 << 13); // Toggle PIN PC13 by XOR
+		
 	}	
 }
 
@@ -32,9 +33,31 @@ void RCC_Config()
 	RCC_ABP2ENR |= 1 << 4; // provide clock to TIM2
 }
 
-void GPIO_Config()
+void TIM_Config()
 {
 	TIM2_PSC = 7200 -1; // Prescaler = 7200 -> Timer will run on 1kHz
-	TIM2_ARR = 10000 -1;
+	TIM2_ARR = 10000 -1;// Auto - reload
 	
+	TIM2_DIER |= (1 << 0); // enable update event
+	TIM2_CR1 = (1 << 0);   // enable counter
+	
+	NVIC_ISER0 |= (1 << 28);	
 }
+
+void GPIO_Config()
+{
+	GPIO_CRH &= ~((1 << 23) | (1 << 22));
+	GPIO_CRH |= (1 << 21) | (1 << 20);
+}
+
+int main()
+{
+	RCC_Config();
+	GPIO_Config();
+	TIM_Config();
+	while(1)
+	{
+		// do nothing
+	}
+}
+

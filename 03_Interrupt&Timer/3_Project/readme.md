@@ -1,0 +1,1 @@
+## Ngắt phần 1, viết code ngắt timer không dùng thư viện 

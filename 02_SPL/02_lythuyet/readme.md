@@ -59,7 +59,7 @@ typedef enum
   GPIO_Mode_IPU = 0x48,             // input pull down
   GPIO_Mode_Out_OD = 0x14,          // open drain
   GPIO_Mode_Out_PP = 0x10,          // output push-pull
-  GPIO_Mode_AF_OD = 0x1C,           
+  GPIO_Mode_AF_OD = 0x1C,           // aside from GPIO, afternative function - open drain
   GPIO_Mode_AF_PP = 0x18
 }GPIOMode_TypeDef;
 ```

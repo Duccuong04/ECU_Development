@@ -1,4 +1,3 @@
-// Master
 #include "stm32f10x.h"                  // Device header
 #include "stm32f10x_gpio.h"             // Keil::Device:StdPeriph Drivers:GPIO
 #include "stm32f10x_rcc.h"              // Keil::Device:StdPeriph Drivers:RCC
@@ -44,7 +43,7 @@ void delay(uint32_t time)
 
 	
 // configurating GPIO pin as SPI function
-void GPIO_config()
+void GPIO_Config()
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	
@@ -55,13 +54,12 @@ void GPIO_config()
 	GPIO_Init(SPI1_GPIO, &GPIO_InitStructure);
 }
 
-
 // SPI configuration
 void SPI_Config()
 {
 	SPI_InitTypeDef SPI_InitStructure;
 	
-	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
+	SPI_InitStructure.SPI_Mode = SPI_Mode_Slave;
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
 	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
@@ -75,29 +73,30 @@ void SPI_Config()
 	SPI_Cmd(SPI1, ENABLE);	
 }
 
-void SPI_Send1Byte(uint8_t data)
+uint8_t SPI_Receive1Byte(void)
 {
-		GPIO_ResetBits(GPIOA, SPI1_NSS);
-		while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET){}
-    SPI_I2S_SendData(SPI1, (uint16_t)data);
-    while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_BSY) == SET){}
-		GPIO_SetBits(GPIOA, SPI1_NSS);
+    uint8_t temp;
+	  while (GPIO_ReadInputDataBit(GPIOA, SPI1_NSS) == 1){}
+    while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE)==0){}
+		temp = (uint8_t)SPI_I2S_ReceiveData(SPI1);
+    while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_BSY)==1){}
+    return temp;
 }
 
-uint8_t Data_Transmitter[] = {1, 3, 5, 9, 10, 18};
-int main()
+uint8_t data;
+int main ()
 {
 	RCC_Config();
+	GPIO_Config();
 	TIM_Config();
 	SPI_Config();
-	GPIO_config();
 	
 	while(1)
 	{
-		for(int i = 0; i < sizeof(Data_Transmitter)/sizeof(uint8_t); i++)
+		while(GPIO_ReadInputDataBit(GPIOA, SPI1_NSS) == 1){}
+		if(GPIO_ReadInputDataBit(GPIOA, SPI1_NSS) == 0)
 		{
-			SPI_Send1Byte(Data_Transmitter[i]);
-			delay(1000);
+			data = SPI_Receive1Byte();
 		}
 	}
 }

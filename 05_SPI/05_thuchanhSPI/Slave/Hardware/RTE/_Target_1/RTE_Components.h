@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'spihard' 
+ * Project: 'slavehardware' 
  * Target:  'Target 1' 
  */
 

@@ -1,8 +1,10 @@
 #include "stm32f10x.h"                  // Device header
 #include "stm32f10x_gpio.h"             // Keil::Device:StdPeriph Drivers:GPIO
 #include "stm32f10x_rcc.h"              // Keil::Device:StdPeriph Drivers:RCC
-#include "stm32f10x_spi.h"              // Keil::Device:StdPeriph Drivers:SPI
 #include "stm32f10x_tim.h"              // Keil::Device:StdPeriph Drivers:TIM
+#include "stm32f10x_spi.h"              // Keil::Device:StdPeriph Drivers:SPI
+
+
 
 // define SPI pin of STM32F103
 #define SPI1_NSS 	GPIO_Pin_4
@@ -39,8 +41,9 @@ void delay(uint32_t time)
 	{}		
 }
 
+	
 // configurating GPIO pin as SPI function
-void GPIO_config()
+void GPIO_Config()
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	
@@ -56,7 +59,7 @@ void SPI_Config()
 {
 	SPI_InitTypeDef SPI_InitStructure;
 	
-	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
+	SPI_InitStructure.SPI_Mode = SPI_Mode_Slave;
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
 	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
@@ -70,39 +73,35 @@ void SPI_Config()
 	SPI_Cmd(SPI1, ENABLE);	
 }
 
-uint8_t SPI_Master_Transmit_Send1Byte(uint8_t data)
+uint8_t SPI_Slave_Transmit_Receive1Byte(uint8_t data)
 {
-	  uint8_t temp;
-	
-		GPIO_ResetBits(GPIOA, SPI1_NSS);
-	  // transmit
+    uint8_t temp;
+	  while (GPIO_ReadInputDataBit(GPIOA, SPI1_NSS) == 1){}
+			
+		// transmit
 		while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET){}
     SPI_I2S_SendData(SPI1, (uint16_t)data);
-    
-		// recieve
-		while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE)==0){}
+			
+		// receive
+    while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE)==0){}
 		temp = (uint8_t)SPI_I2S_ReceiveData(SPI1);
-			
-    while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_BSY)==1){}
-			
-		GPIO_SetBits(GPIOA, SPI1_NSS);
-			
-		return temp;
+
+    return temp;
 }
 
-uint8_t Master_Data_Transmitter[] = {18, 9, 10, 5, 3, 1};
-uint8_t Master_Data_Receive;
+uint8_t Slave_Data_Transmitter[] = {11, 22, 33, 99, 100, 188};
+uint8_t Slave_Data_Receive;
 uint8_t indexx = 0;
-int main()
+int main ()
 {
 	RCC_Config();
+	GPIO_Config();
 	TIM_Config();
 	SPI_Config();
-	GPIO_config();
 	
 	while(1)
 	{
-		Master_Data_Receive = SPI_Master_Transmit_Send1Byte(Master_Data_Transmitter[indexx]);
+		Slave_Data_Receive = SPI_Slave_Transmit_Receive1Byte(Slave_Data_Transmitter[indexx]);
 		indexx ++;
 		if (indexx >= 6) indexx = 0;
 		delay(4);

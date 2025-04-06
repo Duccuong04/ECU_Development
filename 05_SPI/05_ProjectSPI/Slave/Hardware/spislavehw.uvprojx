@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>spimasterhw</OutputName>
+          <OutputName>spislavehw</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -383,9 +383,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>spimasterhw.c</FileName>
+              <FileName>spislavehw.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\spimasterhw.c</FilePath>
+              <FilePath>.\spislavehw.c</FilePath>
             </File>
           </Files>
         </Group>

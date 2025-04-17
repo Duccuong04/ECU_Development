@@ -221,3 +221,5 @@ Dữ liệu được truyền tới các thiết bị slave hoặc được đ�
 -  Stop bits là một bit báo cáo để cho bộ truyền/nhận biết được gói dữ liệu đã được gởi xong. Stop bits là bit bắt buộc phải có trong khung truyền. 
 
 -  Stop bits có thể là 1bit, 1.5bit, 2bit, 0.5bit tùy thuộc vào ứng dụng UART của người sử dụng.
+
+

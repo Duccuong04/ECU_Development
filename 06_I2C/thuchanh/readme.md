@@ -165,5 +165,103 @@ uint8_t I2C_Master_Read	(ACK_Bit _ACK)
 
 ```
 
-## Hardware
+# Hardware
 
+![alt text](image.png)
+
+## 1. Xác định các chân GPIO của bộ I2C
+
+- Dùng bộ I2C1 của STM32, chân SCL là PB6 còn SDA là PB7
+
+![alt text](image-1.png)
+
+```c
+
+#define I2C_SCL 	GPIO_Pin_6
+#define I2C_SDA		GPIO_Pin_7
+
+#define I2C1_GPIO 	GPIOB
+
+```
+## 2. Cấu hình GPIO - tương tự như đã làm ở software
+
+```c
+
+void GPIO_Config(void) {
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7; 
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+}
+
+```
+
+## 3. Cấu hình I2C
+
+- Được cấu hình trong Struct I2C_InitTypeDef
+
+
+# Giao tiếp I2C với MPU6050
+![alt text](image-2.png)
+
+## 1. Địa chỉ của SLave
+
+- **Địa chỉ 7 bit** của MPU6050 là b110100X, X phụ thuộc vào chân C0, bình thường không cắm để đơn giản -> logic chân C0 là **LOW**. Địa chỉ Slave MPU6050 là **0x68**
+- Master cần gửi dữ liệu cho Slave, **bit R/W = 0, Master gửi dữ liệu đến Slave** -> gửi **0XD0**
+
+![alt text](image-4.png)
+
+## 2. Thanh ghi WHO_AM_I
+
+- Kiểm tra xem MPU không bằng cách đọc giá trị phản hồi từ thanh ghi **0x75**. Nếu đọc được **0x68** -> đã hoạt động
+
+![alt text](image-3.png)
+
+## 3. Thanh ghi PWR_MGMT_1 - Power Management
+
+- Đặt thanh ghi này = 0
+
+	- Chọn nguồn xung nhịp bên trong là 8MHz
+
+	- Cảm biến nhiệt độ bật
+
+![alt text](image-5.png)
+
+## 4. Sample Rate Divider - SMPRT_DIV
+
+- Để tốc độ lấy mẫu là 1kHz, đặt **SMPLRT = 7**
+
+![alt text](image-7.png)
+
+## 5. Configuration - CONFIG
+
+- Có thể sử dụng thanh ghi “CONFIG (0x1A)” để cấu hình DLPF. Vì thanh ghi này được đặt lại về 0 theo mặc định, DLPF bị vô hiệu hóa và tốc độ đầu ra của con quay hồi chuyển được đặt thành 8KHz.
+
+## 6. Gyroscope configuration & Accelerometer Configuration
+
+![alt text](image-8.png)
+
+![alt text](image-11.png)
+
+![alt text](image-10.png)
+
+## 7. Accelerometer Measurements
+
+
+![alt text](image-9.png)
+
+- Đọc 6 byte dữ liệu bắt đầu từ thanh ghi 0x3B. Kết hợp 2 bit để thành thanh ghi 16 bit
+
+`ACCEL_X = (ACCEL_XOUT_H <<8) | ACCEL_XOUT_L`
+
+Chia RAW cho 16384 để chuyển sang giá trị g
+
+## 8. Gyroscope Measurement
+
+![alt text](image-12.png)
+
+- Tương tự kết hợp L H để có 16 bit, chia RAW cho 131 để có được giá trị tính theo dps

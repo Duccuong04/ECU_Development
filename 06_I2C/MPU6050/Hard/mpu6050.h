@@ -24,3 +24,4 @@ void MPU6050_Init(void);
 void MPU6050_ReadData(MPU6050_Data *data);
 
 #endif
+

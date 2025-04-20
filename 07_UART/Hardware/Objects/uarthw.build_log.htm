@@ -21,19 +21,16 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.7.0
 Dialog DLL:      TCM.DLL V1.36.5.0
  
 <h2>Project:</h2>
-C:\Users\DELL\OneDrive - The University of Technology\Automotive\ECU_Development\07_UART\Software\uartsf.uvprojx
-Project File Date:  04/07/2025
+C:\Users\DELL\OneDrive - The University of Technology\Automotive\ECU_Development\07_UART\Hardware\uarthw.uvprojx
+Project File Date:  04/20/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling uartsf.c...
-uartsf.c(175): warning:  #223-D: function "strcmp" declared implicitly
-      if(strcmp(rx_buffer, "led") == 0)
-uartsf.c: 1 warning, 0 errors
+compiling main.c...
 linking...
-Program Size: Code=1828 RO-data=252 RW-data=0 ZI-data=1736  
-".\Objects\uartsf.axf" - 0 Error(s), 1 Warning(s).
+Program Size: Code=2008 RO-data=268 RW-data=20 ZI-data=1732  
+".\Objects\uarthw.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -52,6 +49,7 @@ Package Vendor: Keil
    * Component: GPIO Version: 3.6.0
    * Component: RCC Version: 3.6.0
    * Component: TIM Version: 3.6.0
+   * Component: USART Version: 3.6.0
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\Device\STM32F103C8
@@ -65,17 +63,17 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.3.0
 
    * Component: Keil::Device:Startup:1.0.0
-      Include file:  RTE_Driver\Config\RTE_Device.h
-      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
       Source file:   Device\Source\system_stm32f10x.c
+      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
       Source file:   Device\Source\ARM\STM32F1xx_OPT.s
+      Include file:  RTE_Driver\Config\RTE_Device.h
 
    * Component: Keil::Device:StdPeriph Drivers:Framework:3.6.0
+      Include file:  Device\StdPeriph_Driver\inc\misc.h
+      Include file:  Device\StdPeriph_Driver\templates\stm32f10x_it.h
       Source file:   Device\StdPeriph_Driver\src\misc.c
       Source file:   Device\StdPeriph_Driver\templates\stm32f10x_conf.h
       Source file:   Device\StdPeriph_Driver\templates\stm32f10x_it.c
-      Include file:  Device\StdPeriph_Driver\templates\stm32f10x_it.h
-      Include file:  Device\StdPeriph_Driver\inc\misc.h
 
    * Component: Keil::Device:StdPeriph Drivers:GPIO:3.6.0
       Include file:  Device\StdPeriph_Driver\inc\stm32f10x_gpio.h
@@ -86,8 +84,12 @@ Package Vendor: Keil
       Source file:   Device\StdPeriph_Driver\src\stm32f10x_rcc.c
 
    * Component: Keil::Device:StdPeriph Drivers:TIM:3.6.0
-      Source file:   Device\StdPeriph_Driver\src\stm32f10x_tim.c
       Include file:  Device\StdPeriph_Driver\inc\stm32f10x_tim.h
+      Source file:   Device\StdPeriph_Driver\src\stm32f10x_tim.c
+
+   * Component: Keil::Device:StdPeriph Drivers:USART:3.6.0
+      Include file:  Device\StdPeriph_Driver\inc\stm32f10x_usart.h
+      Source file:   Device\StdPeriph_Driver\src\stm32f10x_usart.c
 Build Time Elapsed:  00:00:00
 </pre>
 </body>

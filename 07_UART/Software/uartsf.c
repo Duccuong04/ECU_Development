@@ -13,7 +13,7 @@
 // Clock
 void RCC_Config()
 {
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 }
 
@@ -123,27 +123,60 @@ char UARTSoftware_Receive()
 	
 	// wait stop bit
 	delay_us(bit_time/2);
+	
+	return c;
+}
+
+void UARTSoftware_TransmitString(const char* string)
+{
+	while(*string != '\0')
+	{
+		UARTSoftware_Transmit(*string);
+		string ++;
+	}
+}
+
+void UARTSoftware_ReceiveString(char* buffer, uint16_t maxLength)
+{
+	int i = 0;
+	char c;
+	
+	while(i < maxLength - 1)
+	{
+		c = UARTSoftware_Receive();
+		if(c == '\n' || c == '\r')
+		{
+			break;
+		}
+			buffer[i++] = c;
+	}
+	buffer[i] = '\0';
 }
 
 char data_transmit[5] = {'C', 'U', 'O', 'N', 'G'};
-char data_receive;
+char *str = "duccuong\n";
+char rx_buffer[50] = {0};
+char rx_receive[50] = {0};
+char data;
+
 int main(void)
 {
 	RCC_Config();
 	TIM_Config();
-  GPIO_Config();
+	GPIO_Config();
 	UART_Init();
+
+//	UARTSoftware_TransmitString("Bat dau nhan UART...\n");
+
+while (1)
+{
+    UARTSoftware_ReceiveString(rx_buffer, 50);
+
+    if(strcmp(rx_buffer, "led") == 0)
+    {
+        UARTSoftware_TransmitString("Bat LED\n");
+    }
+
+}
 	
-	while(1)
-	{
-		/*for(int i = 0; i < 5; i++)
-		{
-			UARTSoftware_Transmit(data_transmit[i]);
-			delay_s(1);
-		}
-		UARTSoftware_Transmit('\n');
-		*/
-		
-		data_receive = UARTSoftware_Receive();
-	}
 }

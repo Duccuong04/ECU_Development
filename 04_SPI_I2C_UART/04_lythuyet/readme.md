@@ -223,3 +223,4 @@ Dữ liệu được truyền tới các thiết bị slave hoặc được đ�
 -  Stop bits có thể là 1bit, 1.5bit, 2bit, 0.5bit tùy thuộc vào ứng dụng UART của người sử dụng.
 
 
+

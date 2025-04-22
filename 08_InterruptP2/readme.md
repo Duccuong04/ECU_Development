@@ -196,6 +196,10 @@ if(TIM_GetITStatus(TIM2, TIM_IT_Update)){
 
 ### 3. Ngắt truyền thông (UART, I2C, SPI,...)
 
+![alt text](image-7.png)
+![alt text](image-8.png)
+
+![alt text](image-9.png)
 - Xảy ra khi có sự kiện truyền/nhận dữ liệu giữa MCU với các thiết bị bên ngoài hay với MCU.Sử dụng cho nhiều phương thức như SPI, I2C, UART,... nhằm đảm bảo việc truyền nhận chính xác. 
 
 - Ví dụ: Khi bên truyền bắt đầu truyền thì bên nhận sẽ lập tức dừng chương trình hiện tại để thực hiện nhận dữ liệu từ bên truyền. Nhận xong sẽ tiếp tục thực hiện chương trình chính.

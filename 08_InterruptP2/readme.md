@@ -194,7 +194,7 @@ if(TIM_GetITStatus(TIM2, TIM_IT_Update)){
 }
 ```
 
-### 3. Ngắt truyền thông (UART, I2C, SPI,...)
+## 3. Ngắt truyền thông (UART, I2C, SPI,...)
 
 ![alt text](image-7.png)
 ![alt text](image-8.png)
@@ -221,3 +221,44 @@ void USART1_IRQHandler()
 	USART_ClearITPendingBit (USART1, USART_IT_RXNE);
 }
 ```
+## 4. Cơ chế ngắt lồng nhau
+
+- Địa chỉ được lưu vào Stack Pointer, dựa vào 2 thanh ghi LR (Link Register) và PC (Program Counter)
+
+- **Thanh ghi Program Counter**: 
+
+	- PC chứa địa chỉ **lệnh kế tiếp sẽ thực hiện**
+
+	- Khi ngắt xảy ra, địa chỉ hiện tại trong PC (tức là lệnh đang thực thi) sẽ được lưu vào **Stack Pointer (SP)**
+
+- **Thanh ghi LR (Link Register)**
+
+	- LR thường lưu địa chỉ rở về sau khi **kết thúc một hàm hoặc ngắt**
+
+	- Trong ngắt, LR chứa 1 giá trị đặc biệt gọi là **EXC_RETURN**, đùng để xác định hệ thống sẽ **quay lại chế độ nào sau khi xử ngắt**
+
+- **Stack Pointer (SP)**
+
+	- Khi CPU vào trình xử lý ngắt -> tự đọng đẩy một số thanh ghi vào stack thông qua SP
+
+![alt text](image-10.png)
+
+
+
+1. Giả sử **Ngắt A** đang được xử lý
+
+2. Trong lúc đó, **Ngắt B** có mức ưu tiên xảy ra.
+
+3. CPU tạm dừng ngắt A
+
+4. CPU xử lý ngắt B
+
+5. Khi kết thúc ngắt B
+
+- Lấy lại LR, PC.... từ Stack, trở lại xử lý tiếp ngắt A
+
+![alt text](image-11.png)
+
+PC - Như vị trí chân bạn đang đứng hiện tại
+
+LR - Như việc bạn cắm một lá cờ đánh dấu chỗ đứng cũ, để còn quay lại đúng chỗ sau khi làm việc khác

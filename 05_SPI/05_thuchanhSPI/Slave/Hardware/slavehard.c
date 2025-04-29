@@ -83,7 +83,8 @@ uint8_t SPI_Receive1Byte(void)
     return temp;
 }
 
-uint8_t data;
+uint8_t data[50];
+uint8_t i = 0;
 int main ()
 {
 	RCC_Config();
@@ -96,7 +97,8 @@ int main ()
 		while(GPIO_ReadInputDataBit(GPIOA, SPI1_NSS) == 1){}
 		if(GPIO_ReadInputDataBit(GPIOA, SPI1_NSS) == 0)
 		{
-			data = SPI_Receive1Byte();
+			data[i] = SPI_Receive1Byte();
+			i++;
 		}
 	}
 }

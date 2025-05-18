@@ -17,29 +17,17 @@ Library Manager: ArmAr.exe V5.06 update 6 (build 750)
 Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
 CPU DLL:         SARMCM3.DLL V5.29.0.0
 Dialog DLL:      DCM.DLL V1.17.3.0
-Target DLL:      UL2CM3.DLL V1.163.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.7.0
 Dialog DLL:      TCM.DLL V1.36.5.0
  
 <h2>Project:</h2>
-C:\Users\DELL\OneDrive - The University of Technology\Automotive\ECU_Development\12_CAN\Master\Can_Master.uvprojx
-Project File Date:  05/17/2025
+C:\Users\DELL\OneDrive - The University of Technology\Automotive\ECU_Development\12_CAN\ECU_Transmit\Can_Master.uvprojx
+Project File Date:  05/18/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Rebuild target 'Target 1'
-assembling startup_stm32f10x_md.s...
-compiling system_stm32f10x.c...
-compiling stm32f10x_rcc.c...
-compiling misc.c...
-compiling stm32f10x_can.c...
-compiling Can_Master.c...
-Can_Master.c(76): warning:  #1-D: last line of file ends without a newline
-  }
-Can_Master.c: 1 warning, 0 errors
-compiling stm32f10x_gpio.c...
-linking...
-Program Size: Code=2012 RO-data=268 RW-data=12 ZI-data=1636  
-".\Objects\Can_Master.axf" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+".\Objects\Can_Master.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -71,8 +59,8 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.3.0
 
    * Component: Keil::Device:Startup:1.0.0
-      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
       Include file:  RTE_Driver\Config\RTE_Device.h
+      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
       Source file:   Device\Source\system_stm32f10x.c
       Source file:   Device\Source\ARM\STM32F1xx_OPT.s
 
@@ -81,20 +69,20 @@ Package Vendor: Keil
       Include file:  Device\StdPeriph_Driver\inc\stm32f10x_can.h
 
    * Component: Keil::Device:StdPeriph Drivers:Framework:3.6.0
-      Source file:   Device\StdPeriph_Driver\templates\stm32f10x_conf.h
-      Source file:   Device\StdPeriph_Driver\src\misc.c
       Include file:  Device\StdPeriph_Driver\inc\misc.h
-      Source file:   Device\StdPeriph_Driver\templates\stm32f10x_it.c
+      Source file:   Device\StdPeriph_Driver\templates\stm32f10x_conf.h
       Include file:  Device\StdPeriph_Driver\templates\stm32f10x_it.h
+      Source file:   Device\StdPeriph_Driver\src\misc.c
+      Source file:   Device\StdPeriph_Driver\templates\stm32f10x_it.c
 
    * Component: Keil::Device:StdPeriph Drivers:GPIO:3.6.0
-      Source file:   Device\StdPeriph_Driver\src\stm32f10x_gpio.c
       Include file:  Device\StdPeriph_Driver\inc\stm32f10x_gpio.h
+      Source file:   Device\StdPeriph_Driver\src\stm32f10x_gpio.c
 
    * Component: Keil::Device:StdPeriph Drivers:RCC:3.6.0
-      Source file:   Device\StdPeriph_Driver\src\stm32f10x_rcc.c
       Include file:  Device\StdPeriph_Driver\inc\stm32f10x_rcc.h
-Build Time Elapsed:  00:00:01
+      Source file:   Device\StdPeriph_Driver\src\stm32f10x_rcc.c
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>
